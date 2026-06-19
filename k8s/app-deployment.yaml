@@ -18,27 +18,27 @@ spec:
 
     spec:
       containers:
-      - name: backend
+        - name: backend
+          image: sumanvish/devops-app:v2
+          imagePullPolicy: Always
 
-        image: sumanvish/devops-app:v1
+          ports:
+            - containerPort: 3000
 
-        ports:
-        - containerPort: 3000
+          env:
+            - name: DB_HOST
+              value: mysql
 
-        env:
-        - name: DB_HOST
-          value: mysql
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
 
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 5
-          periodSeconds: 5
-
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 10
-          periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
